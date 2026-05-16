@@ -154,10 +154,12 @@ Example entry:
 
 ## Notes
 
-- The datasets are synthetic and were created with ChatGPT for search experiments.
 - BGE-M3 creates much larger vectors than the MiniLM/FastEmbed setup, so keep upload batches small.
 - The active collection, dataset, embedder, and chunking profile are selected in each script's `__main__` block.
 - Use a new collection name when changing vector dimensions, otherwise Qdrant will reject incompatible uploads.
+- The datasets are synthetic and were created with ChatGPT for search experiments.
+- The large `qdrant_docs_100k` dataset uses Git LFS; install Git LFS and run
+  `git lfs pull` after cloning if the file is not downloaded automatically.
 
 ## References
 
