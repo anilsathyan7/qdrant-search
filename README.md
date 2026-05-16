@@ -152,6 +152,34 @@ Example entry:
 }
 ```
 
+## Evaluation
+
+The evaluation script checks whether each query retrieves its expected
+documentation URL in the top results. It reports recall, MRR, and latency for
+the configured collection.
+
+- **Recall@10** measures whether the expected URL or section anchor appears in
+  the top 10 results. A score of `0.8` means the system finds the correct answer
+  80% of the time.
+- **MRR@10** measures how early the correct result appears. Rank 1 scores `1.0`,
+  rank 2 scores `0.5`, and a miss in the top 10 scores `0`.
+- **Latency P50/P95** measures response time. P50 is the median query latency,
+  while P95 captures slower tail latency that affects user experience.
+
+Example BGE-M3 run:
+
+```text
+Collection 'docs_search_2' ready (status=green, points=5400, segments=6).
+Evaluation: queries=25, limit=10, candidate_limit=100, fusion=rrf, hnsw_ef=None
+
+   rank=1   1585.1 ms  how to configure HNSW graph construction for better recall
+   rank=1    498.9 ms  combine dense and sparse results with reciprocal rank fusion
+   rank=6    368.1 ms  ColBERT token level vectors for reranking
+   rank=1    225.6 ms  RAG context assembly and answer grounding
+
+Summary: recall@10=1.000, mrr@10=0.910, p50=328.0 ms, p95=1507.7 ms
+```
+
 ## Notes
 
 - BGE-M3 creates much larger vectors than the MiniLM/FastEmbed setup, so keep upload batches small.
