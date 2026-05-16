@@ -89,7 +89,7 @@ python scripts/evaluate_search.py
 
 - `qdrant_search.py` contains `TextChunker` and `QdrantSearchManager`.
 - `qdrant_embedder.py` contains FastEmbed and BGE-M3 document embedders.
-- `qdrant_search_config.py` contains model ids, dataset configs, and vector/chunk config helpers.
+- `qdrant_config.py` contains model ids, dataset configs, and vector/chunk config helpers.
 - `scripts/compare_chunking.py` compares fixed, sentence, and semantic chunking.
 - `scripts/evaluate_search.py` evaluates recall, MRR, and latency.
 - `datasets/` contains the sample and generated dataset files.

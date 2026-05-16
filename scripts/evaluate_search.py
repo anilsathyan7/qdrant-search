@@ -13,7 +13,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from qdrant_search import QdrantSearchManager, setup_collection
 from qdrant_embedder import BGEM3DocumentEmbedder, DocumentEmbedder
-from qdrant_search_config import chunking_config
+from qdrant_config import chunking_config
 
 
 def embedding_setup(name: str) -> Dict[str, Any]:

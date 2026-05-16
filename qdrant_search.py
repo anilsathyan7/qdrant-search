@@ -11,7 +11,7 @@ from qdrant_client import QdrantClient, models
 from transformers import AutoTokenizer
 
 from qdrant_embedder import DocumentEmbedder, BGEM3DocumentEmbedder
-from qdrant_search_config import (
+from qdrant_config import (
     DATASET_CONFIGS,
     DEFAULT_FILTER,
     DENSE_MODEL_ID,

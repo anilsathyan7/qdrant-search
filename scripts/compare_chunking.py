@@ -7,7 +7,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from qdrant_search import TextChunker
-from qdrant_search_config import chunking_config
+from qdrant_config import chunking_config
 
 
 def chunk_text(data_file: Path, chunker: TextChunker) -> None:

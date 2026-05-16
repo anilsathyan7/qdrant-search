@@ -3,7 +3,7 @@ from typing import Any, Dict, List
 from fastembed import TextEmbedding, SparseTextEmbedding, LateInteractionTextEmbedding
 from FlagEmbedding import FlagAutoModel
 
-from qdrant_search_config import (
+from qdrant_config import (
     BGE_M3_MODEL_ID,
     COLBERT_MODEL_ID,
     DENSE_MODEL_ID,
