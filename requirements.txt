@@ -1,0 +1,10 @@
+sentence-transformers
+transformers
+qdrant-client
+llama-index-core
+llama-index-embeddings-huggingface
+fastembed
+FlagEmbedding
+fastapi
+fastapi[standard]
+requests

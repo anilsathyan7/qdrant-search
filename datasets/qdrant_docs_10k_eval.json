@@ -1,0 +1,180 @@
+[
+  {
+    "query": "how to configure HNSW graph construction for better recall",
+    "expected_urls": [
+      "/documentation/indexing/hnsw-and-optimizers/python/local-docker/#graph-construction-parameters"
+    ],
+    "query_type": "how-to"
+  },
+  {
+    "query": "reduce memory pressure during vector indexing",
+    "expected_urls": [
+      "/documentation/indexing/hnsw-and-optimizers/python/local-docker/#memory-pressure-controls"
+    ],
+    "query_type": "troubleshooting"
+  },
+  {
+    "query": "when should I use on disk vector storage",
+    "expected_urls": [
+      "/documentation/indexing/hnsw-and-optimizers/python/local-docker/#on-disk-vector-storage"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "how to measure recall after quantization",
+    "expected_urls": [
+      "/documentation/storage/quantization-and-storage/python/local-docker/#recall-measurement"
+    ],
+    "query_type": "how-to"
+  },
+  {
+    "query": "scalar quantization memory reduction",
+    "expected_urls": [
+      "/documentation/storage/quantization-and-storage/python/local-docker/#scalar-quantization"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "oversampling and rescoring for quantized vectors",
+    "expected_urls": [
+      "/documentation/storage/quantization-and-storage/python/local-docker/#rescoring-and-oversampling"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "combine dense and sparse results with reciprocal rank fusion",
+    "expected_urls": [
+      "/documentation/search/hybrid-retrieval/python/local-docker/#reciprocal-rank-fusion"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "how to prepare sparse vectors for hybrid retrieval",
+    "expected_urls": [
+      "/documentation/search/hybrid-retrieval/python/local-docker/#sparse-vector-preparation"
+    ],
+    "query_type": "api-usage"
+  },
+  {
+    "query": "debug relevance drift in hybrid search",
+    "expected_urls": [
+      "/documentation/search/hybrid-retrieval/python/local-docker/#debugging-relevance-drift"
+    ],
+    "query_type": "troubleshooting"
+  },
+  {
+    "query": "apply metadata filters during retrieval",
+    "expected_urls": [
+      "/documentation/search/hybrid-retrieval/python/local-docker/#filter-aware-retrieval"
+    ],
+    "query_type": "api-usage"
+  },
+  {
+    "query": "ColBERT token level vectors for reranking",
+    "expected_urls": [
+      "/documentation/search/multivector-late-interaction/python/local-docker/#token-level-vectors"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "MAX_SIM comparator behavior in multivector search",
+    "expected_urls": [
+      "/documentation/search/multivector-late-interaction/python/local-docker/#comparator-behavior"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "latency budgeting for late interaction reranking",
+    "expected_urls": [
+      "/documentation/search/multivector-late-interaction/python/local-docker/#latency-budgeting"
+    ],
+    "query_type": "troubleshooting"
+  },
+  {
+    "query": "create payload indexes for keyword and integer fields",
+    "expected_urls": [
+      "/documentation/filtering/payload-indexes-and-filters/python/local-docker/#keyword-and-integer-indexes"
+    ],
+    "query_type": "api-usage"
+  },
+  {
+    "query": "nested payload filter conditions",
+    "expected_urls": [
+      "/documentation/filtering/payload-indexes-and-filters/python/local-docker/#nested-payload-filters"
+    ],
+    "query_type": "api-usage"
+  },
+  {
+    "query": "plan payload indexes for high cardinality fields",
+    "expected_urls": [
+      "/documentation/filtering/payload-indexes-and-filters/python/local-docker/#cardinality-planning"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "create collection with named vectors in python",
+    "expected_urls": [
+      "/documentation/concepts/collections-and-points/python/local-docker/#named-vector-layout"
+    ],
+    "query_type": "api-usage"
+  },
+  {
+    "query": "point identifiers and payload design",
+    "expected_urls": [
+      "/documentation/concepts/collections-and-points/python/local-docker/#point-identifiers-and-payloads"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "select distance metric for vector search",
+    "expected_urls": [
+      "/documentation/concepts/vector-search-fundamentals/python/local-docker/#distance-metric-selection"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "interpret vector search scores",
+    "expected_urls": [
+      "/documentation/concepts/vector-search-fundamentals/python/local-docker/#score-interpretation"
+    ],
+    "query_type": "concept"
+  },
+  {
+    "query": "plan shards for distributed Qdrant deployment",
+    "expected_urls": [
+      "/documentation/scaling/distributed-deployment/python/local-docker/#shard-planning"
+    ],
+    "query_type": "how-to"
+  },
+  {
+    "query": "replica placement and failure recovery in a cluster",
+    "expected_urls": [
+      "/documentation/scaling/distributed-deployment/python/local-docker/#replica-placement",
+      "/documentation/scaling/distributed-deployment/python/local-docker/#failure-recovery"
+    ],
+    "query_type": "troubleshooting"
+  },
+  {
+    "query": "snapshot backup cadence and restore planning",
+    "expected_urls": [
+      "/documentation/operations/snapshots-and-backups/python/local-docker/#backup-cadence",
+      "/documentation/operations/snapshots-and-backups/python/local-docker/#restore-planning"
+    ],
+    "query_type": "how-to"
+  },
+  {
+    "query": "RAG context assembly and answer grounding",
+    "expected_urls": [
+      "/documentation/tutorials/rag-pipeline/python/local-docker/#context-assembly",
+      "/documentation/tutorials/rag-pipeline/python/local-docker/#answer-grounding"
+    ],
+    "query_type": "how-to"
+  },
+  {
+    "query": "secure API keys and credential handling",
+    "expected_urls": [
+      "/documentation/security/access-control-cloud-keys/python/local-docker/#credential-handling"
+    ],
+    "query_type": "troubleshooting"
+  }
+]
