@@ -15,7 +15,7 @@ actually improved.
 
 1. Load docs-style JSON from `datasets/`.
 2. Chunk document text with LlamaIndex splitters and Hugging Face tokenizers.
-3. Create dense, sparse, and ColBERT vectors with FastEmbed or FlagEmbedding.
+3. Create dense, sparse, and ColBERT vectors with FastEmbed, FlagEmbedding, or the Jina + miniCOIL setup.
 4. Upload vectors and payloads into a Qdrant collection.
 5. Embed the user query with the same vector types.
 6. Run hybrid search in Qdrant and return ranked results.
@@ -88,7 +88,7 @@ python scripts/evaluate_search.py
 ## Files
 
 - `qdrant_search.py` contains `TextChunker` and `QdrantSearchManager`.
-- `qdrant_embedder.py` contains FastEmbed and BGE-M3 document embedders.
+- `qdrant_embedder.py` contains FastEmbed, BGE-M3, and Jina document embedders.
 - `qdrant_config.py` contains model ids, dataset configs, and vector/chunk config helpers.
 - `scripts/compare_chunking.py` compares fixed, sentence, and semantic chunking.
 - `scripts/evaluate_search.py` evaluates recall, MRR, and latency.
@@ -97,15 +97,16 @@ python scripts/evaluate_search.py
 ## Libraries
 
 - Qdrant stores vectors, payloads, indexes, and runs hybrid retrieval.
-- FastEmbed provides the MiniLM dense model, BM25 sparse model, and ColBERT model.
+- FastEmbed provides the MiniLM dense model, BM25/miniCOIL sparse models, and ColBERT model.
 - FlagEmbedding runs BGE-M3 for dense, sparse, and ColBERT-style vectors.
-- Hugging Face provides model/tokenizer loading for chunking and embeddings.
+- Hugging Face and Sentence Transformers provide model/tokenizer loading for chunking and embeddings.
 - LlamaIndex provides sentence and semantic chunking utilities.
 
 ## Embedders
 
 - `DocumentEmbedder` uses FastEmbed models for dense, sparse, and ColBERT vectors.
 - `BGEM3DocumentEmbedder` uses FlagEmbedding with BGE-M3 for dense, sparse, and ColBERT vectors from one model.
+- `JinaDocumentEmbedder` uses Jina v5 for dense vectors, miniCOIL for sparse vectors, and FastEmbed ColBERT.
 - Vector dimensions are read from the active embedder and passed into the Qdrant collection config.
 
 ## Chunking
@@ -113,7 +114,7 @@ python scripts/evaluate_search.py
 - `sentence` is the default strategy and preserves sentence boundaries with overlap.
 - `fixed` splits by token count and is mostly useful for debugging.
 - `semantic` uses embedding similarity to group nearby text.
-- Chunk sizes live in `chunking_config()`, with separate defaults for MiniLM and BGE-M3.
+- Chunk sizes live in `chunking_config()`, with separate defaults for MiniLM, BGE-M3, and Jina v5.
 
 ## Dataset
 
@@ -158,6 +159,9 @@ The evaluation script checks whether each query retrieves its expected
 documentation URL in the top results. It reports recall, MRR, and latency for
 the configured collection.
 
+Change `embedding_name` in `scripts/evaluate_search.py` to compare
+`all_minilm`, `bge_m3`, and `jina_v5` runs.
+
 - **Recall@10** measures whether the expected URL or section anchor appears in
   the top 10 results. A score of `0.8` means the system finds the correct answer
   80% of the time.
@@ -183,6 +187,7 @@ Summary: recall@10=1.000, mrr@10=0.910, p50=328.0 ms, p95=1507.7 ms
 ## Notes
 
 - BGE-M3 creates much larger vectors than the MiniLM/FastEmbed setup, so keep upload batches small.
+- Jina v5 is available as an experimental mixed setup with Jina dense, miniCOIL sparse, and FastEmbed ColBERT.
 - The active collection, dataset, embedder, and chunking profile are selected in each script's `__main__` block.
 - Use a new collection name when changing vector dimensions, otherwise Qdrant will reject incompatible uploads.
 - The datasets are synthetic and were created with ChatGPT for search experiments.
@@ -193,5 +198,7 @@ Summary: recall@10=1.000, mrr@10=0.910, p50=328.0 ms, p95=1507.7 ms
 
 - Qdrant fundamentals: [Qdrant Essentials](https://qdrant.tech/course/essentials/)
 - Dense embedding model: [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
+- Jina dense embedding model: [jina-embeddings-v5 text small retrieval](https://huggingface.co/jinaai/jina-embeddings-v5-text-small-retrieval)
+- Sparse embedding model: [miniCOIL v1](https://huggingface.co/Qdrant/minicoil-v1)
 - Semantic chunking: [LlamaIndex Semantic Double Merging Chunking](https://developers.llamaindex.ai/python/examples/node_parsers/semantic_double_merging_chunking/)
 - BGE-M3 embedding library: [FlagEmbedding](https://github.com/flagopen/flagembedding)
