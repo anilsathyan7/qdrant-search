@@ -11,27 +11,34 @@ from qdrant_client import models
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from qdrant_search import QdrantSearchManager, setup_collection
-from qdrant_embedder import BGEM3DocumentEmbedder, DocumentEmbedder
 from qdrant_config import chunking_config
+from qdrant_embedder import BGEM3DocumentEmbedder, DocumentEmbedder, JinaDocumentEmbedder
+from qdrant_search import QdrantSearchManager, setup_collection
 
 
 def embedding_setup(name: str) -> Dict[str, Any]:
     if name == "all_minilm":
         return {
-            "collection_name": "docs_search",
+            "collection_name": "docs_search_all_minilm",
             "embedder": DocumentEmbedder(),
             "chunk_config": chunking_config("all_minilm"),
         }
 
     if name == "bge_m3":
         return {
-            "collection_name": "docs_search_2",
+            "collection_name": "docs_search_bge_m3",
             "embedder": BGEM3DocumentEmbedder(use_fp16=False),
             "chunk_config": chunking_config("bge_m3"),
         }
 
-    raise ValueError("name must be one of: all_minilm, bge_m3")
+    if name == "jina_v5":
+        return {
+            "collection_name": "docs_search_jina_v5",
+            "embedder": JinaDocumentEmbedder(),
+            "chunk_config": chunking_config("jina_v5"),
+        }
+
+    raise ValueError("name must be one of: all_minilm, bge_m3, jina_v5")
 
 
 def load_queries(eval_file: Path) -> List[Dict[str, Any]]:

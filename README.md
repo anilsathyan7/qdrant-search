@@ -169,7 +169,7 @@ the configured collection.
 Example BGE-M3 run:
 
 ```text
-Collection 'docs_search_2' ready (status=green, points=5400, segments=6).
+Collection 'docs_search_bge_m3' ready (status=green, points=5400, segments=6).
 Evaluation: queries=25, limit=10, candidate_limit=100, fusion=rrf, hnsw_ef=None
 
    rank=1   1585.1 ms  how to configure HNSW graph construction for better recall

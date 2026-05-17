@@ -10,11 +10,12 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from qdrant_client import QdrantClient, models
 from transformers import AutoTokenizer
 
-from qdrant_embedder import DocumentEmbedder, BGEM3DocumentEmbedder
+from qdrant_embedder import DocumentEmbedder, BGEM3DocumentEmbedder, JinaDocumentEmbedder
 from qdrant_config import (
     DATASET_CONFIGS,
     DEFAULT_FILTER,
     DENSE_MODEL_ID,
+    EMBEDDING_DEVICE,
     chunking_config,
     hybrid_vector_configs,
 )
@@ -29,7 +30,7 @@ class TextChunker:
         chunk_size: int = 180,  # stays below 256-token model limit
         chunk_overlap: int = 30,  # preserves cross-chunk context
         semantic_max_chunk_size: int = 800,  # ~200 tokens by char heuristic
-        embedding_device: str = "cpu",  # avoids incompatible CUDA kernels
+        embedding_device: str = EMBEDDING_DEVICE,
     ):
         self.model_name = model_name
         self.chunk_size = chunk_size
@@ -99,7 +100,7 @@ class QdrantSearchManager:
         chunk_size: int = 180,  # stays below 256-token model limit
         chunk_overlap: int = 30,  # preserves cross-chunk context
         semantic_max_chunk_size: int = 800,  # ~200 tokens by char heuristic
-        embedding_device: str = "cpu",  # avoids incompatible CUDA kernels
+        embedding_device: str = EMBEDDING_DEVICE,
         embedding_model_name: str = DENSE_MODEL_ID,
     ):
         self.client = QdrantClient(url=url, api_key=api_key)
@@ -109,7 +110,10 @@ class QdrantSearchManager:
         self.chunk_strategy = chunk_strategy
         self.embedder = embedder or DocumentEmbedder()
 
-        collection_configs = hybrid_vector_configs(**self.embedder.vector_dimensions())
+        collection_configs = hybrid_vector_configs(
+            **self.embedder.vector_dimensions(),
+            sparse_modifier=self.embedder.sparse_modifier(),
+        )
         self.vector_configs = collection_configs["vector_configs"]
         self.sparse_configs = collection_configs["sparse_configs"]
         self.chunker = chunker or TextChunker(
@@ -247,18 +251,16 @@ class QdrantSearchManager:
 
         for start in range(0, total_documents, batch_size):
             batch_documents = documents[start:start + batch_size]
+            print(f"Processing chunks {start + 1}-{start + len(batch_documents)}/{total_documents}...")
+            texts = [document.get(text_key, "") for document in batch_documents]
+            embeddings = self.embedder.embed_texts(texts, parallel=parallel)
             points = []
 
             for batch_index, document in enumerate(batch_documents):
                 index = start + batch_index
-                if index % 10 == 0:
-                    print(f"Processing chunk {index + 1}/{total_documents}...")
-
-                text = document.get(text_key, "")
-                embeddings = self.embedder.embed_texts([text], parallel=parallel)
-                dense_vector = embeddings["dense"][0]
-                sparse_vector = embeddings["sparse"][0]
-                colbert_vector = embeddings["colbert"][0]
+                dense_vector = embeddings["dense"][batch_index]
+                sparse_vector = embeddings["sparse"][batch_index]
+                colbert_vector = embeddings["colbert"][batch_index]
 
                 if hasattr(sparse_vector, "as_object"):
                     sparse_vector = sparse_vector.as_object()
@@ -440,18 +442,18 @@ def print_results(response: Any) -> None:
 
 if __name__ == "__main__":
     manager, dataset_config = setup_collection(
-        collection_name="docs_search_2",
+        collection_name="docs_search_jina_v5",
         dataset_name="qdrant_docs_10k",
         on_disk=False,
         recreate=False,
-        embedder=BGEM3DocumentEmbedder(use_fp16=False),
-        chunk_config=chunking_config("bge_m3"),
+        embedder=JinaDocumentEmbedder(),
+        chunk_config=chunking_config("jina_v5"),
     )
 
     upload_dataset(
         manager=manager,
         dataset_config=dataset_config,
-        batch_size=128,
+        batch_size=4,
         upload_batch_size=4,
     )
 

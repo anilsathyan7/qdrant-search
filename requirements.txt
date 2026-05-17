@@ -4,6 +4,7 @@ qdrant-client
 llama-index-core
 llama-index-embeddings-huggingface
 fastembed
+onnxruntime-gpu
 FlagEmbedding
 fastapi
 fastapi[standard]

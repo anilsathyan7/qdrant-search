@@ -1,12 +1,15 @@
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from qdrant_client import models
 
 DENSE_MODEL_ID = "sentence-transformers/all-MiniLM-L6-v2"
 SPARSE_MODEL_ID = "Qdrant/bm25"  # or SPLADE if you want heavier sparse
+JINA_V5_DENSE_MODEL_ID = "jinaai/jina-embeddings-v5-text-small-retrieval"
+MINICOIL_SPARSE_MODEL_ID = "Qdrant/minicoil-v1"
 COLBERT_MODEL_ID = "colbert-ir/colbertv2.0"
 BGE_M3_MODEL_ID = "BAAI/bge-m3"
+EMBEDDING_DEVICE = "cpu"
 PROJECT_ROOT = Path(__file__).resolve().parent
 DATASET_ROOT = PROJECT_ROOT / "datasets"
 DEFAULT_FILTER = models.Filter(
@@ -55,7 +58,7 @@ def chunking_config(name: str = "all_minilm") -> Dict[str, Any]:
             "chunk_overlap": 30,
             "semantic_max_chunk_size": 800,
             "embedding_model_name": DENSE_MODEL_ID,
-            "embedding_device": "cpu",
+            "embedding_device": EMBEDDING_DEVICE,
         },
         "bge_m3": {
             "chunk_strategy": "sentence",
@@ -63,7 +66,15 @@ def chunking_config(name: str = "all_minilm") -> Dict[str, Any]:
             "chunk_overlap": 80,
             "semantic_max_chunk_size": 2000,
             "embedding_model_name": BGE_M3_MODEL_ID,
-            "embedding_device": "cpu",
+            "embedding_device": EMBEDDING_DEVICE,
+        },
+        "jina_v5": {
+            "chunk_strategy": "sentence",
+            "chunk_size": 1024,
+            "chunk_overlap": 128,
+            "semantic_max_chunk_size": 2000,
+            "embedding_model_name": JINA_V5_DENSE_MODEL_ID,
+            "embedding_device": EMBEDDING_DEVICE,
         },
     }
     return configs[name]
@@ -72,6 +83,7 @@ def chunking_config(name: str = "all_minilm") -> Dict[str, Any]:
 def hybrid_vector_configs(
     dense_size: int,
     colbert_size: int,
+    sparse_modifier: Optional[models.Modifier] = None,
     dense_distance: models.Distance = models.Distance.COSINE,
     colbert_distance: models.Distance = models.Distance.COSINE,
 ) -> Dict[str, Any]:
@@ -91,6 +103,6 @@ def hybrid_vector_configs(
             ),
         },
         "sparse_configs": {
-            "sparse": models.SparseVectorParams(),
+            "sparse": models.SparseVectorParams(modifier=sparse_modifier),
         },
     }
